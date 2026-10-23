@@ -177,7 +177,6 @@ class CompressionApp:
         self.footer_status = ttk.Label(footer, textvariable=self.status, style="StatusMuted.TLabel", wraplength=700)
         self.footer_status.pack(side="left", fill="x", expand=True)
         self.cancel_button = ttk.Button(footer, text="Annuler", command=self._cancel, state="disabled")
-        self.cancel_button.pack(side="right")
         self.root.bind_all("<Control-o>", self._shortcut_open_archive)
         self.root.bind_all("<Control-Return>", self._shortcut_start)
         self.root.bind_all("<Escape>", self._shortcut_cancel)
@@ -1176,7 +1175,9 @@ class CompressionApp:
             self.active_context = {"action": "inspecter", "format": "7z", "sources": [task["source"]]}
             self.cancel_is_deferred = False
         self.run_button.configure(state="disabled")
-        self.cancel_button.configure(state="normal")
+        if task["kind"] != "inspect":
+            self.cancel_button.configure(state="normal")
+            self.cancel_button.pack(side="right", padx=(SPACE["sm"], 0))
         self.archive_open_button.configure(state="disabled")
         self.archive_extract_button.configure(state="disabled")
         self.progress_percent.set(0)
@@ -1386,6 +1387,7 @@ class CompressionApp:
         self.progressbar.configure(mode="determinate")
         self.run_button.configure(state="normal")
         self.cancel_button.configure(state="disabled")
+        self.cancel_button.pack_forget()
         self.archive_open_button.configure(state="normal")
         self.archive_extract_button.configure(state="normal")
 
