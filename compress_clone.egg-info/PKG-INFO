@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: compress-clone
+Version: 0.1.0
+Summary: Application graphique de compression bzip2, LZMA et 7-Zip
+Requires-Python: >=3.10
+Requires-Dist: py7zr<2,>=1.1
+Requires-Dist: tkinterdnd2<1,>=0.6.4
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Provides-Extra: build
+Requires-Dist: pyinstaller>=6; extra == "build"

@@ -1,0 +1,3 @@
+[console_scripts]
+compress-clone = compress_clone.cli:main
+compress-clone-gui = compress_clone.gui:main

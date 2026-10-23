@@ -65,14 +65,17 @@ python -m pytest
 
 Les tests couvrent les formats flux, les images, dossiers et fichiers vides ou volumineux, les noms accentués, les mots de passe 7z, l’intégrité après extraction, les collisions, les erreurs d’accès, l’annulation, les archives corrompues et la traversée de chemins.
 
-## Créer un exécutable Windows
+## Créer l’installateur Windows
+
+Sur l’ordinateur qui sert à préparer la distribution, installez [Inno Setup 6](https://jrsoftware.org/isinfo.php), puis lancez :
 
 ```powershell
-python -m pip install -e ".[build]"
-pyinstaller --noconfirm --clean --windowed --name Mihena --collect-all py7zr --collect-all pycryptodomex --collect-all backports.zstd --collect-all tkinterdnd2 Demarrer.pyw
+.\packaging\build_windows.ps1
 ```
 
-L’exécutable est généré sous `dist\Mihena.exe`. Vérifiez le paquet sur une machine Windows propre avant distribution, notamment la découverte des dépendances natives de `py7zr`.
+Le script crée un environnement de construction isolé, installe les dépendances nécessaires à la compilation et produit `dist\installer\Mihena-Setup.exe`. Cet installateur contient Python, l’application et ses bibliothèques : sur l’ordinateur destinataire, il suffit d’ouvrir le fichier et de cliquer sur **Installer**. Python et `requirements.txt` n’y sont pas nécessaires.
+
+L’installation est proposée pour le compte Windows courant. Le raccourci du menu Démarrer est créé automatiquement; la création d’un raccourci sur le Bureau est proposée en option. Vérifiez l’installateur sur un ordinateur Windows propre avant distribution, notamment les fonctions 7z et glisser-déposer.
 
 ## Limites connues
 

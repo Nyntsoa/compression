@@ -1,0 +1,8 @@
+py7zr<2,>=1.1
+tkinterdnd2<1,>=0.6.4
+
+[build]
+pyinstaller>=6
+
+[dev]
+pytest>=8
