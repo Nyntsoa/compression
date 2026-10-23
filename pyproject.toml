@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "compress-clone"
+version = "0.1.0"
+description = "Application graphique de compression bzip2, LZMA et 7-Zip"
+requires-python = ">=3.10"
+dependencies = ["py7zr>=1.1,<2", "tkinterdnd2>=0.6.4,<1"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+build = ["pyinstaller>=6"]
+
+[project.scripts]
+compress-clone = "compress_clone.cli:main"
+compress-clone-gui = "compress_clone.gui:main"
+
+[tool.setuptools]
+packages = ["compress_clone"]
