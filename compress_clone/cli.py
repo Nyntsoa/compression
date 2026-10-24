@@ -19,8 +19,8 @@ def _parser() -> argparse.ArgumentParser:
     compress.add_argument("inputs", nargs="+", type=Path)
     compress.add_argument("-f", "--format", choices=FORMATS, default="xz")
     compress.add_argument("-o", "--output", type=Path, help="destination (fichier 7z ou dossier de sortie)")
-    compress.add_argument("-l", "--level", type=int, choices=range(1, 10), default=6)
-    compress.add_argument("--dictionary-mib", type=int, default=8, help="taille du dictionnaire LZMA en MiB")
+    compress.add_argument("-l", "--level", type=int, choices=range(1, 10), default=9)
+    compress.add_argument("--dictionary-mib", type=int, default=32, help="taille du dictionnaire LZMA en MiB")
 
     decompress = commands.add_parser("decompress", aliases=["d"], help="extraire un ou plusieurs fichiers")
     decompress.add_argument("inputs", nargs="+", type=Path)

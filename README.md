@@ -8,6 +8,7 @@ Le logiciel s’appuie sur les codecs de Python (`bz2`, `lzma`) et la bibliothè
 ## Fonctionnalités
 
 - Compresser un ou plusieurs fichiers en `.bz2`, `.xz` ou `.lzma`.
+- Utiliser par défaut le niveau de compression maximal, avec un dictionnaire LZMA de 32 Mio ; ces réglages augmentent le temps de calcul et la mémoire utilisée.
 - Créer une archive `.7z` à partir de fichiers et de dossiers, avec niveau LZMA2 et mot de passe facultatif.
 - Décompresser les flux `.bz2`, `.xz`, `.lzma` et extraire des archives `.7z`.
 - Explorer, rechercher et extraire une sélection de fichiers d’une archive 7z.
@@ -21,7 +22,7 @@ Le logiciel s’appuie sur les codecs de Python (`bz2`, `lzma`) et la bibliothè
 - Refuser l’écrasement par défaut, demander confirmation avant remplacement à l’extraction, traiter les fichiers par blocs et nettoyer les sorties temporaires en cas d’échec.
 - Vérifier les chemins des archives, refuser les chemins absolus, les traversées `..` et les liens symboliques, avec des limites de nombre d’éléments et de taille décompressée.
 
-Les mots de passe ne sont jamais enregistrés dans l’historique. Les fichiers extraits ne sont jamais exécutés automatiquement.
+Les mots de passe ne sont jamais enregistrés dans l’historique. Les fichiers extraits ne sont jamais exécutés automatiquement. Les formats déjà compressés (JPEG, MP4, ZIP, PDF, etc.) peuvent toutefois gagner très peu, même avec l’intensité maximale.
 
 ## Prérequis et installation
 

@@ -14,8 +14,8 @@ from .engine import OperationResult
 
 DEFAULT_SETTINGS = {
     "format": "xz",
-    "level": 6,
-    "dictionary_kib": 8192,
+    "level": 9,
+    "dictionary_kib": 32 * 1024,
     "max_files": 10000,
     "max_uncompressed_mib": 10240,
     "theme": "system",
@@ -27,10 +27,10 @@ SETTING_LIMITS = {
     "dictionary_kib": (64, 262_144),
 }
 NUMERIC_FALLBACKS = {
-    "level": 6,
+    "level": 9,
     "max_files": 10_000,
     "max_uncompressed_mib": 10_240,
-    "dictionary_kib": 8192,
+    "dictionary_kib": 32 * 1024,
 }
 ALLOWED_SETTING_KEYS = set(DEFAULT_SETTINGS)
 

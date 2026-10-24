@@ -178,8 +178,8 @@ def _archive_items(sources: list[Path]) -> list[tuple[Path, str]]:
 
 
 def compress(
-    sources: Iterable[Path], kind: str, *, output: Path | None = None, level: int = 6,
-    dictionary_kib: int = 8 * 1024, password: str | None = None,
+    sources: Iterable[Path], kind: str, *, output: Path | None = None, level: int = 9,
+    dictionary_kib: int = 32 * 1024, password: str | None = None,
     progress: ProgressCallback | None = None, cancel: CancelCheck | None = None,
 ) -> OperationResult:
     if kind not in FORMATS:

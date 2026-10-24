@@ -1,0 +1,18 @@
+[
+  {
+    "when": "2026-10-24T21:04:00+03:00",
+    "action": "compress",
+    "format": "7z",
+    "sources": [
+      "secret.txt"
+    ],
+    "outputs": [
+      "C:\\Users\\Antonio\\Desktop\\Devoir codage\\.pytest-tmp\\test_history_records_operation0\\secret.7z"
+    ],
+    "input_bytes": 20,
+    "output_bytes": 30,
+    "duration_seconds": 0.12,
+    "status": "Réussi",
+    "detail": ""
+  }
+]

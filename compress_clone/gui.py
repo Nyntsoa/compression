@@ -17,6 +17,7 @@ from .theme import FONTS, SPACE, apply_theme, resolve_theme
 
 
 FORMATS = ("bz2", "xz", "lzma", "7z")
+DICTIONARY_MIB_OPTIONS = (8, 16, 32, 64, 128)
 COMPRESSION_LEVELS = ("Faible", "Moyen", "Élevé", "Très élevé")
 COMPRESSION_LEVEL_VALUES = {"Faible": 1, "Moyen": 6, "Élevé": 7, "Très élevé": 9}
 THEME_IDS = {"Clair": "light", "Sombre": "dark", "Automatique": "system"}
@@ -72,7 +73,10 @@ class CompressionApp:
         self.sources: list[Path] = []
         self.output = tk.StringVar()
         self.level = tk.StringVar(value=_compression_level_name(int(self.settings["level"])))
-        self.dictionary_mib = tk.IntVar(value=max(1, int(self.settings["dictionary_kib"]) // 1024))
+        saved_dictionary_mib = max(1, int(self.settings["dictionary_kib"]) // 1024)
+        dictionary_mib = min(DICTIONARY_MIB_OPTIONS, key=lambda value: abs(value - saved_dictionary_mib))
+        self.dictionary_mib = tk.IntVar(value=dictionary_mib)
+        self.dictionary_choice_buttons: dict[int, ttk.Button] = {}
         self.password = tk.StringVar()
         self.show_password = tk.BooleanVar(value=False)
         self.status = tk.StringVar(value="Prêt")
@@ -461,8 +465,18 @@ class CompressionApp:
         self.level_box.grid(row=1, column=0, sticky="ew", padx=(0, 12), pady=(0, 10))
         self.dictionary_label = ttk.Label(self.advanced_frame, text="Dictionnaire (Mo)", style="Surface.TLabel")
         self.dictionary_label.grid(row=0, column=1, sticky="w", padx=(0, 8), pady=(0, 4))
-        self.dictionary_box = ttk.Spinbox(self.advanced_frame, from_=1, to=256, textvariable=self.dictionary_mib, width=7)
-        self.dictionary_box.grid(row=1, column=1, sticky="ew", pady=(0, 10))
+        self.dictionary_choices = ttk.Frame(self.advanced_frame, style="Surface.TFrame")
+        self.dictionary_choices.grid(row=1, column=1, sticky="w", pady=(0, 10))
+        for column, value in enumerate(DICTIONARY_MIB_OPTIONS):
+            button = ttk.Button(
+                self.dictionary_choices,
+                text=str(value),
+                width=4,
+                style="Primary.TButton" if value == self.dictionary_mib.get() else "TButton",
+                command=lambda choice=value: self._set_dictionary_choice(choice),
+            )
+            button.grid(row=0, column=column, padx=(0 if column == 0 else 3, 0), sticky="ew")
+            self.dictionary_choice_buttons[value] = button
         self.password_label = ttk.Label(self.advanced_frame, text="Mot de passe 7z", style="Surface.TLabel")
         self.password_label.grid(row=2, column=0, columnspan=2, sticky="w", pady=(2, 4))
         self.password_entry = ttk.Entry(
@@ -604,7 +618,7 @@ class CompressionApp:
 
         if narrow:
             self.dictionary_label.grid_configure(row=2, column=0, columnspan=1, pady=(0, 4))
-            self.dictionary_box.grid_configure(row=3, column=0, columnspan=1, padx=0)
+            self.dictionary_choices.grid_configure(row=3, column=0, columnspan=1, padx=0)
             self.password_label.grid_configure(row=4, column=0, columnspan=1)
             self.password_entry.grid_configure(row=5, column=0, columnspan=1, padx=0, pady=(0, 6))
             self.show_password_check.grid_configure(row=6, column=0, columnspan=1)
@@ -612,7 +626,7 @@ class CompressionApp:
             self.advanced_frame.columnconfigure(1, weight=0)
         else:
             self.dictionary_label.grid_configure(row=0, column=1, columnspan=1, pady=(0, 4))
-            self.dictionary_box.grid_configure(row=1, column=1, columnspan=1, padx=0)
+            self.dictionary_choices.grid_configure(row=1, column=1, columnspan=1, padx=0)
             self.password_label.grid_configure(row=2, column=0, columnspan=2)
             self.password_entry.grid_configure(row=3, column=0, columnspan=1, padx=(0, 12), pady=0)
             self.show_password_check.grid_configure(row=3, column=1, columnspan=1)
@@ -893,6 +907,11 @@ class CompressionApp:
             if isinstance(child, ttk.Label):
                 child.configure(wraplength=full)
 
+    def _set_dictionary_choice(self, value: int) -> None:
+        self.dictionary_mib.set(value)
+        for choice, button in self.dictionary_choice_buttons.items():
+            button.configure(style="Primary.TButton" if choice == value else "TButton")
+
     def _refresh_mode(self) -> None:
         compressing = self.mode.get() == "Compresser"
         self.format_box.configure(values=FORMATS if compressing else ("Automatique", *FORMATS))
@@ -902,7 +921,8 @@ class CompressionApp:
             self.format.set("xz")
         self.level_box.configure(state="readonly" if compressing else "disabled")
         use_lzma = self.format.get() in ("xz", "lzma", "7z") and compressing
-        self.dictionary_box.configure(state="normal" if use_lzma else "disabled")
+        for button in self.dictionary_choice_buttons.values():
+            button.configure(state="normal" if use_lzma else "disabled")
         self.dictionary_label.configure(state="normal" if use_lzma else "disabled")
         folders_allowed = compressing and self.format.get() == "7z"
         if folders_allowed:

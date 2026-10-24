@@ -1,0 +1,8 @@
+{
+  "format": "bz2",
+  "level": 8,
+  "dictionary_kib": 32768,
+  "max_files": 10000,
+  "max_uncompressed_mib": 10240,
+  "theme": "light"
+}
